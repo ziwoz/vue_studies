@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Choma</title>
+</head>
+
+<body>
+    <div id="app1">
+        {{ greet }}
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        let app = Vue.createApp({
+            data: function () {
+                return {
+                    greet: 'choma'
+                }
+            }
+        })
+        app.mount('#app1')
+    </script>
+</body>
+
+</html>

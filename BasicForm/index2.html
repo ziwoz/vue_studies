@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Components</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        input {
+            margin: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<div v-cloak id="myBox">
+    <h1>{{data1}}</h1>
+    <login-form />
+</div>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    let app = Vue.createApp({
+        data() {
+            return {
+                data1: 100,
+                data2: "200",
+            }
+        },
+        methods: {
+            myFunc() {
+                return "what man"
+            }
+        }
+    })
+    app.component('login-form', {
+        template: `
+            <form @submit.prevent="handleSubmit">
+                <h1>{{ title }}</h1>
+                <custom-input type="email"/>
+                <custom-input type="password" v-bind:label="emailLabel"/>
+                <button>Submit</button>
+            </form> 
+            `,
+        components: ['custom-input'],
+        data() {
+            return {
+                title: 'Login Form',
+                email: '',
+                password: '',
+                emailLabel: 'Email',
+                passwordLabel: 'Password',
+            }
+        },
+        methods: {
+            handleSubmit() {
+                console.log(this.email + this.password + 'submitted')
+            }
+        }
+    })
+    app.component('custom-input', {
+        template: `
+            <label>
+                {{ label }}
+                <input type="text">
+            </label>
+        `,
+        props: ['label']
+    })
+    app.mount("#myBox")
+</script>
+</body>
+
+</html>

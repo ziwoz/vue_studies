@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>props</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div v-cloak id='app'>
+        <h1>{{ headingText }}</h1>
+        <div>
+            <custom-form />
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    headingText: 'props',
+                }
+            },
+        })
+        app.component('custom-form', {
+            template: `
+            <form @submit.prevent="handleSubmit">
+                <custom-form-field :labelText="emailLabel" v-model="emailInput" />
+                <div class="form-group">
+                  <label>{{passwordLabel}}</label>
+                  <input type="password" class="form-control" v-model="passwordInput">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+              </form>
+            `,
+            components: ['custom-form-field'],
+            data() {
+                return {
+                    emailInput: 'pre input is yes',
+                    passwordInput: '',
+                    emailLabel: 'Email please is yes:',
+                    passwordLabel: 'Password please:',
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    console.log('submitted' + this.emailInput + this.passwordInput)
+                }
+            },
+        })
+        app.component('custom-form-field', {
+            template:
+                `
+                <div class="form-group">
+                    <label>{{ labelText }}</label>
+                    <input type="text" class="form-control" v-model='inputValue'>
+                </div>
+                `,
+            props: ['labelText', 'modelValue'],
+            computed: {
+                inputValue: {
+                    get() {
+                        return this.modelValue
+                    },
+                    set(value) {
+                        console.log(value)
+                        this.$emit('update:modelValue', value)
+
+                    },
+                }
+            }
+        })
+        app.mount('#app')
+    </script>
+
+</body>
+
+</html>
